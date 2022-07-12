@@ -102,7 +102,7 @@ resource apiContainerApp 'Microsoft.App/containerApps@2022-03-01' = {
           image: 'docker.io/nikneem/pollstar-api:${containerVersion}'
           name: 'pollstar-api'
           resources: {
-            cpu: 1
+            cpu: json('0.25')
             memory: '0.5Gi'
           }
           env: [
