@@ -1,8 +1,7 @@
 ﻿using Azure;
 using Azure.Data.Tables;
 using HexMaster.RedisCache.Abstractions;
-using Microsoft.Extensions.Options;
-using PollStar.Core.Configuration;
+using PollStar.Core;
 using PollStar.Votes.Abstractions.DataTransferObjects;
 using PollStar.Votes.Abstractions.Repositories;
 using PollStar.Votes.Repositories.Entities;
@@ -89,11 +88,11 @@ public class PollStarVotesRepositories : IPollStarVotesRepositories
         return polls;
     }
 
-    public PollStarVotesRepositories(IOptions<AzureStorageConfiguration> azureStorageOptions, ICacheClientFactory cacheClientFactory)
+    public PollStarVotesRepositories(ICacheClientFactory cacheClientFactory)
     {
         _cacheClient = cacheClientFactory.CreateClient(Constants.DefaultCacheClientName);
-        var accountName = azureStorageOptions.Value.StorageAccount;
-        var accountKey = azureStorageOptions.Value.StorageKey;
+        var accountName = Environment.GetEnvironmentVariable(EnvironmentVariableName.AzureStorageAccountName);
+        var accountKey = Environment.GetEnvironmentVariable(EnvironmentVariableName.AzureStorageAccountKey);
         var storageUri = new Uri($"https://{accountName}.table.core.windows.net");
         _tableClient = new TableClient(
             storageUri,

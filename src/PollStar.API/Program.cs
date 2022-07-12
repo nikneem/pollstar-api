@@ -1,4 +1,5 @@
 using HexMaster.RedisCache;
+using PollStar.Core;
 using PollStar.Core.Configuration;
 using PollStar.Polls;
 using PollStar.Sessions;
@@ -9,8 +10,18 @@ const string defaultCorsPolicyName = "default_cors";
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.Configure<AzureStorageConfiguration>(
-    builder.Configuration.GetSection(AzureStorageConfiguration.SectionName));
+var environmentVariables = Environment.GetEnvironmentVariables();
+var config = new AzureStorageConfiguration();
+builder.Configuration.GetSection(AzureStorageConfiguration.SectionName).Bind(config);
+if (!environmentVariables.Contains(EnvironmentVariableName.AzureStorageAccountName))
+{
+    Environment.SetEnvironmentVariable(EnvironmentVariableName.AzureStorageAccountName, config.StorageAccount);
+}
+if (!environmentVariables.Contains(EnvironmentVariableName.AzureStorageAccountKey))
+{
+    Environment.SetEnvironmentVariable(EnvironmentVariableName.AzureStorageAccountKey, config.StorageKey);
+}
+
 
 builder.Services.AddHexMasterCache(builder.Configuration);
 builder.Services.AddPollStarUsers();

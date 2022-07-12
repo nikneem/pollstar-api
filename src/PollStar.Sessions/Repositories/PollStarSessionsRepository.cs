@@ -1,6 +1,7 @@
 ﻿using Azure;
 using Azure.Data.Tables;
 using Microsoft.Extensions.Options;
+using PollStar.Core;
 using PollStar.Core.Configuration;
 using PollStar.Sessions.Abstractions.DomainModels;
 using PollStar.Sessions.Abstractions.Repositories;
@@ -53,10 +54,10 @@ public class PollStarSessionsRepository : IPollStarSessionsRepository
         throw new NotImplementedException();
     }
 
-    public PollStarSessionsRepository(IOptions<AzureStorageConfiguration> azureStorageOptions)
+    public PollStarSessionsRepository()
     {
-        var accountName = azureStorageOptions.Value.StorageAccount;
-        var accountKey = azureStorageOptions.Value.StorageKey;
+        var accountName = Environment.GetEnvironmentVariable(EnvironmentVariableName.AzureStorageAccountName);
+        var accountKey = Environment.GetEnvironmentVariable(EnvironmentVariableName.AzureStorageAccountKey);
         var storageUri = new Uri($"https://{accountName}.table.core.windows.net");
         _tableClient = new TableClient(
             storageUri,
