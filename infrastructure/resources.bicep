@@ -3,6 +3,14 @@ param location string
 param storageAccountTables array
 param containerVersion string
 
+param containerAppEnvironmentResourceGroupName string
+param containerAppEnvironmentResourceName string
+
+resource containerAppEnvironments 'Microsoft.App/managedEnvironments@2022-03-01' existing = {
+  name: containerAppEnvironmentResourceName
+  scope: resourceGroup(containerAppEnvironmentResourceGroupName)
+}
+
 resource storageAccount 'Microsoft.Storage/storageAccounts@2021-09-01' = {
   name: uniqueString(defaultResourceName)
   location: location
@@ -32,34 +40,7 @@ resource redisCache 'Microsoft.Cache/redis@2021-06-01' = {
     publicNetworkAccess: 'Enabled'
   }
 }
-resource logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2021-12-01-preview' = {
-  name: '${defaultResourceName}-log'
-  location: location
-  properties: {
-    sku: {
-      name: 'PerGB2018'
-    }
-    features: {
-      enableLogAccessUsingOnlyResourcePermissions: true
-    }
-    publicNetworkAccessForIngestion: 'Enabled'
-    publicNetworkAccessForQuery: 'Enabled'
-  }
-}
-resource containerAppEnvironments 'Microsoft.App/managedEnvironments@2022-03-01' = {
-  name: '${defaultResourceName}-env'
-  location: location
-  properties: {
-    appLogsConfiguration: {
-      destination: 'log-analytics'
-      logAnalyticsConfiguration: {
-        customerId: guid(logAnalyticsWorkspace.properties.customerId)
-        sharedKey: listKeys(logAnalyticsWorkspace.id, logAnalyticsWorkspace.apiVersion).primarySharedKey
-      }
-    }
-    zoneRedundant: false
-  }
-}
+
 resource apiContainerApp 'Microsoft.App/containerApps@2022-03-01' = {
   name: '${defaultResourceName}-cnt-api'
   location: location
