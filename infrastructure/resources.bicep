@@ -19,7 +19,6 @@ resource storageAccountTable 'Microsoft.Storage/storageAccounts/tableServices/ta
   name: table
   parent: storageAccountTableService
 }]
-
 resource redisCache 'Microsoft.Cache/redis@2021-06-01' = {
   name: '${defaultResourceName}-cache'
   location: location
@@ -33,7 +32,6 @@ resource redisCache 'Microsoft.Cache/redis@2021-06-01' = {
     publicNetworkAccess: 'Enabled'
   }
 }
-
 resource logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2021-12-01-preview' = {
   name: '${defaultResourceName}-log'
   location: location
@@ -48,7 +46,6 @@ resource logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2021-12
     publicNetworkAccessForQuery: 'Enabled'
   }
 }
-
 resource containerAppEnvironments 'Microsoft.App/managedEnvironments@2022-03-01' = {
   name: '${defaultResourceName}-env'
   location: location
@@ -63,7 +60,6 @@ resource containerAppEnvironments 'Microsoft.App/managedEnvironments@2022-03-01'
     zoneRedundant: false
   }
 }
-
 resource apiContainerApp 'Microsoft.App/containerApps@2022-03-01' = {
   name: '${defaultResourceName}-cnt-api'
   location: location
@@ -81,7 +77,7 @@ resource apiContainerApp 'Microsoft.App/containerApps@2022-03-01' = {
         }
         {
           name: 'redis-cache-secret'
-          value: listKeys(redisCache.id, redisCache.apiVersion).keys[0].value
+          value: listKeys(redisCache.id, redisCache.apiVersion).primaryKey
         }
       ]
       ingress: {
