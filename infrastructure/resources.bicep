@@ -75,11 +75,11 @@ resource apiContainerApp 'Microsoft.App/containerApps@2022-03-01' = {
       activeRevisionsMode: 'Single'
       secrets: [
         {
-          name: 'StorageAccountKey'
+          name: 'storage-account-secret'
           value: listKeys(storageAccount.id, storageAccount.apiVersion).keys[0].value
         }
         {
-          name: 'CacheSecret'
+          name: 'redis-cache-secret'
           value: listKeys(redisCache.id, redisCache.apiVersion).keys[0].value
         }
       ]
@@ -108,19 +108,19 @@ resource apiContainerApp 'Microsoft.App/containerApps@2022-03-01' = {
           env: [
             {
               name: 'Cache:Secret'
-              secretRef: 'CacheSecret'
+              secretRef: 'redis-cache-secret'
             }
             {
               name: 'Cache:Endpoint'
-              secretRef: '${redisCache.name}.redis.cache.windows.net'
+              value: '${redisCache.name}.redis.cache.windows.net'
             }
             {
               name: 'Azure:StorageAccount'
-              secretRef: storageAccount.name
+              value: storageAccount.name
             }
             {
               name: 'Azure:StorageKey'
-              secretRef: 'StorageAccountKey'
+              secretRef: 'storage-account-secret'
             }
           ]
         }
