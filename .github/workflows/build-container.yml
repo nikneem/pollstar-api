@@ -53,7 +53,7 @@ jobs:
           path: infrastructure/*.json
 
   infrastructure-incremental-test:
-    needs: publish-bicep
+    needs: [build, publish-bicep]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
