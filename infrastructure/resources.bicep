@@ -80,6 +80,7 @@ resource apiContainerApp 'Microsoft.App/containerApps@2022-03-01' = {
         }
         {
           name: 'CacheSecret'
+          value: listKeys(redisCache.id, redisCache.apiVersion).keys[0].value
         }
       ]
       ingress: {
