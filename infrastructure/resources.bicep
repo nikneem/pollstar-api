@@ -57,6 +57,7 @@ resource containerAppEnvironments 'Microsoft.App/managedEnvironments@2022-03-01'
       destination: 'log-analytics'
       logAnalyticsConfiguration: {
         customerId: guid(logAnalyticsWorkspace.properties.customerId)
+        sharedKey: listKeys(logAnalyticsWorkspace.id, logAnalyticsWorkspace.apiVersion).primarySharedKey
       }
     }
     zoneRedundant: false
