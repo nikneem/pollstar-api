@@ -12,10 +12,8 @@ namespace PollStar.API.Controllers
         {
             return Ok(new
             {
-                CacheSecret = Environment.GetEnvironmentVariable("Cache_Secret"),
                 CacheEndpoint = Environment.GetEnvironmentVariable("Cache_Endpoint"),
                 AzureStorageAccount = Environment.GetEnvironmentVariable("Azure_StorageAccount"),
-                AzureStorageKey = Environment.GetEnvironmentVariable("Azure_StorageKey")
             });
         }
     }
