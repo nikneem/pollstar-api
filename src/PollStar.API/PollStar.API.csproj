@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>8fccc86f-fe51-4956-a3b3-2ca6447b7b30</UserSecretsId>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="HexMaster.RedisCache" Version="0.1.6" />
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.15.1" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\PollStar.Polls.Abstractions\PollStar.Polls.Abstractions.csproj" />
+    <ProjectReference Include="..\PollStar.Polls\PollStar.Polls.csproj" />
+    <ProjectReference Include="..\PollStar.Sessions.Abstractions\PollStar.Sessions.Abstractions.csproj" />
+    <ProjectReference Include="..\PollStar.Sessions\PollStar.Sessions.csproj" />
+    <ProjectReference Include="..\PollStar.Users.Abstractions\PollStar.Users.Abstractions.csproj" />
+    <ProjectReference Include="..\PollStar.Users\PollStar.Users.csproj" />
+  </ItemGroup>
+
+</Project>

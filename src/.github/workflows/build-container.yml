@@ -1,0 +1,43 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      # Install GitVersion to automatically create a semantic
+      # version from your repository:
+      - name: Install GitVersion
+        uses: gittools/actions/gitversion/setup@v0.9.7
+        with:
+          versionSpec: "5.x"
+
+      # Run GitVersion (set an ID to later fetch values)
+      - name: Determine Version
+        id: gitversion
+        uses: gittools/actions/gitversion/execute@v0.9.7
+        with:
+          useConfigFile: true
+
+      - name: Build versioned image
+        working-directory: src
+        run: docker build . --file src/Dockerfile --tag nikneem/pollstar-api:${{ steps.gitversion.outputs.MajorMinorPatch }}
+      - name: Build latest image
+        working-directory: src
+        run: docker build . --file src/Dockerfile --tag nikneem/pollstar-api:latest
+
+      - name: Login to docker hub
+        run: docker login -u nikneem -p ${{ secrets.DOCKER_TOKEN }}
+
+      - name: Push versioned image to docker
+        run: docker push nikneem/pollstar-api:${{ steps.gitversion.outputs.MajorMinorPatch }}
+      - name: Push latest image to docker
+        run: docker push nikneem/pollstar-api:latest
