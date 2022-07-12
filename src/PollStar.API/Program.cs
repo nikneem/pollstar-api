@@ -36,8 +36,9 @@ builder.Services.AddCors(options =>
         bldr =>
         {
             bldr.WithOrigins("http://localhost:4200",
-                    "https://gray-mushroom-0bd85e303.1.azurestaticapps.net",
-                    "https://roulette.hexmaster.nl")
+                    "https://pollstar-dev.hexmaster.nl",
+                    "https://pollstar-test.hexmaster.nl",
+                    "https://pollstar.hexmaster.nl")
                 .AllowAnyHeader()
                 .AllowAnyMethod()
                 .AllowCredentials();
