@@ -29,10 +29,10 @@ jobs:
 
       - name: Build versioned image
         working-directory: src
-        run: docker build . --file src/Dockerfile --tag nikneem/pollstar-api:${{ steps.gitversion.outputs.MajorMinorPatch }}
+        run: docker build . --file Dockerfile --tag nikneem/pollstar-api:${{ steps.gitversion.outputs.MajorMinorPatch }}
       - name: Build latest image
         working-directory: src
-        run: docker build . --file src/Dockerfile --tag nikneem/pollstar-api:latest
+        run: docker build . --file Dockerfile --tag nikneem/pollstar-api:latest
 
       - name: Login to docker hub
         run: docker login -u nikneem -p ${{ secrets.DOCKER_TOKEN }}
